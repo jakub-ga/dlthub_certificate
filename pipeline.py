@@ -7,7 +7,6 @@ This pipeline extracts data from the Jaffle Shop API with performance optimizati
 - Worker tuning (configurable via environment variables)
 """
 
-import os
 from typing import Any, Iterator
 
 import dlt
@@ -55,36 +54,20 @@ def jaffle_shop_source() -> list[Any]:
             # Yield entire page as chunk for better performance
             yield page
 
-    return [customers, orders]
-
-
-def basic_pipeline() -> None:
-    """Main entry point for running the pipeline."""
-
-    # Create pipeline
-    pipeline = dlt.pipeline(
-        pipeline_name="jaffle_shop_basic",
-        destination="duckdb",
-        dataset_name="jaffle_shop_dataset_basic",
-    )
-
-    # Run the pipeline
-    pipeline.run(jaffle_shop_source())
-
-    print(f"Pipeline trace: {pipeline.last_trace}")
+    return [customers, orders, products]
 
 
 def boosted_pipeline() -> None:
     # Set worker configuration via environment variables
-    os.environ["EXTRACT__WORKERS"] = "4"
-    os.environ["NORMALIZE__WORKERS"] = "4"
-    os.environ["LOAD__WORKERS"] = "4"
+    # os.environ["EXTRACT__WORKERS"] = "4"
+    # os.environ["NORMALIZE__WORKERS"] = "4"
+    # os.environ["LOAD__WORKERS"] = "4"
 
     # file rotation
-    os.environ["FILE_MAX_ITEMS"] = "100000"
+    # os.environ["FILE_MAX_ITEMS"] = "10000"
 
     # buffer
-    os.environ["BUFFER_MAX_ITEMS"] = "5000"
+    # os.environ["BUFFER_MAX_ITEMS"] = "20000"
 
     # Create pipeline
     pipeline = dlt.pipeline(
@@ -99,5 +82,5 @@ def boosted_pipeline() -> None:
     print(f"Pipeline trace: {pipeline.last_trace}")
 
 
-basic_pipeline()
-boosted_pipeline()
+if __name__ == "__main__":
+    boosted_pipeline()
