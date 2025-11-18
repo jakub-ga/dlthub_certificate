@@ -64,10 +64,10 @@ def boosted_pipeline() -> None:
     # os.environ["LOAD__WORKERS"] = "4"
 
     # file rotation
-    # os.environ["FILE_MAX_ITEMS"] = "10000"
+    # os.environ["DATA_WRITER__FILE_MAX_ITEMS"] = "10000"
 
     # buffer
-    # os.environ["BUFFER_MAX_ITEMS"] = "20000"
+    # os.environ["DATA_WRITER__BUFFER_MAX_ITEMS"] = "20000"
 
     # Create pipeline
     pipeline = dlt.pipeline(
